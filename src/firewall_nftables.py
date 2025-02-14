@@ -15,16 +15,36 @@
 
 #! /usr/bin/python3
 
+cat main.py
+#! /usr/bin/python3
+
+
 import os
 import subprocess
 from datetime import datetime
+
+
+
+# Функция по отключению fi
+def run_remove_firewall():
+    try:
+        subprocess.run(["bash", "remove_firewall.sh"], check=True)
+        print("Скрипт remove_firewall.sh успешно выполнен.")
+    except subprocess.CalledProcessError as e:
+        print(f"Ошибка при выполнении remove_firewall.sh: {e}")
+
+# run_remove_firewall()
+
+
+
+
 
 
 def clear_firewall():
     confirm = input('Подтвердите вы уверены что хотите очистить firewall (Y/N) ')
     if confirm.lower() == 'y':
         try:
-            # Выполняем команду nft flush ruleset
+            # nft flush ruleset
             subprocess.run(["nft", "flush", "ruleset"], check=True)
             print("Правила успешно очищены.")
         except subprocess.CalledProcessError as e:
@@ -37,7 +57,7 @@ def clear_firewall():
 def main():
     print("\nМеню:")
     print("1. Очистить  firewall (nftables)")
-    print("2. Показать применённые команды")
+    print("2. Важно для стабильной работы nftables! Удаление сторонних firewall (iptables, firewalld)")
     print("3. Выйти")
 
 main()
@@ -45,5 +65,7 @@ main()
 number = int(input('Сделайте выбор сценария: '))
 if number == 1:
     clear_firewall()
+elif number == 2:
+    run_remove_firewall()
 else:
     print('Некорректный выбор, попробуйте ещё раз.')
