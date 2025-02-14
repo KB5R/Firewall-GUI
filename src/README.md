@@ -3,3 +3,8 @@
 ```
 apt install python3-nftables
 ```
+
+### Для работы выдайте права
+```
+chmod +x remove_firewall.sh
+```
