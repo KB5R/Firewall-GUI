@@ -53,8 +53,8 @@ def clear_firewall():
 
 def main():
     print("\nМеню:")
-    print("1. Очистить  firewall (nftables)")
-    print("2. Важно для стабильной работы nftables! Удаление сторонних firewall (iptables, firewalld)")
+    print("1. Важно для стабильной работы nftables! Удаление сторонних firewall (iptables, firewalld)")
+    print("2. Очистить  firewall (nftables)")
     print("3. Выйти")
 
 main()
