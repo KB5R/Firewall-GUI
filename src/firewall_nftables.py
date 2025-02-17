@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 #import nftables
 #import json
@@ -13,9 +12,7 @@
 # После мозгового штурма решил изменить подход
 #----------------
 
-#! /usr/bin/python3
 
-cat main.py
 #! /usr/bin/python3
 
 
@@ -64,8 +61,8 @@ main()
 
 number = int(input('Сделайте выбор сценария: '))
 if number == 1:
-    clear_firewall()
-elif number == 2:
     run_remove_firewall()
+elif number == 2:
+    clear_firewall()
 else:
     print('Некорректный выбор, попробуйте ещё раз.')
