@@ -1,0 +1,83 @@
+#!/usr/sbin/nft -f
+
+table inet firewall {
+  # Открытые для всех порты (например, SSH, HTTP, HTTPS)
+  set allowed_ports {
+    type inet_service
+    flags constant
+    elements = { 22, 80, 443 }
+  }
+
+  # Открытые порты для конкретных IP/подсетей
+  set allowed_services {
+    type ipv4_addr . inet_service
+    flags interval
+    elements = { 10.40.12.0/24 . 8080, 192.168.1.10 . 3306 }
+  }
+
+  # Закрытые порты (чёрный список), чтобы явно блокировать
+  set blocked_ports {
+    type inet_service
+    flags constant
+    elements = { 23, 3389 }
+  }
+
+  # Разрешённые IP полностью (например, админский IP)
+  set allowed_ips {
+    type ipv4_addr
+    flags interval
+    elements = { 192.168.1.5, 10.0.0.0/8 }
+  }
+
+  # Заблокированные IP (банлист)
+  set blocked_ips {
+    type ipv4_addr
+    flags interval
+    elements = { 203.0.113.0/24, 198.51.100.10 }
+  }
+
+  chain input_chain {
+    type filter hook input priority 0; policy drop;
+
+    # Блокируем вредоносные IP сразу
+    ip saddr @blocked_ips drop
+
+    # Разрешаем всё от доверенных IP (например, админы)
+    ip saddr @allowed_ips accept
+
+    # Блокируем конкретные порты
+    tcp dport @blocked_ports drop
+
+    # Разрешаем популярные сервисы (SSH, HTTP, HTTPS) для всех
+    tcp dport @allowed_ports accept
+
+    # Разрешаем определённые IP/сети к конкретным портам
+    ip saddr . tcp dport @allowed_services accept
+
+    # Пинги (ICMP) разрешаем
+    ip protocol icmp accept
+
+    # Локалка (например, loopback)
+    iifname lo accept
+
+    # Разрешаем входящие пакеты, которые являются частью уже установленных соединений или ожидающих
+    ct state established,related accept
+
+    # Логируем всё, что отбрасывается (по желанию)
+    log prefix "BLOCKED INPUT: " group 1
+  }
+
+  chain output_chain {
+    type filter hook output priority 0; policy accept;
+
+    # Разрешаем исходящие подключения на порты 80 (HTTP) и 443 (HTTPS)
+    tcp dport { 80, 443 } accept
+
+    # Разрешаем все исходящие соединения
+    accept
+  }
+
+  chain forward_chain {
+    type filter hook forward priority 0; policy drop;
+  }
+}
