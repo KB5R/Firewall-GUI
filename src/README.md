@@ -1,4 +1,5 @@
 # Принял решение не использовать nftables и перейти на iptables для разработки
+# Испоользовать nftables прийдется но под капотом iptables
 ### Ubuntu 22.04 Server
 ```
 apt install iptables
