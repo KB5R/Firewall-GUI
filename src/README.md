@@ -1,4 +1,4 @@
-# Требуется для работы firewall_nftables.py
+# Принял решение не использовать nftables и перейти на iptables для разработки
 ### Ubuntu 22.04 Server
 ```
 apt install iptables
@@ -10,3 +10,4 @@ chmod +x remove_firewall.sh
 ```
 
 Добавил дерикторию program в которой хранятся скрипты *.sh
+
