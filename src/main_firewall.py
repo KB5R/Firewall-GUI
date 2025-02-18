@@ -22,7 +22,7 @@ from datetime import datetime
 # Remove iptables and firewalld
 def run_remove_firewall():
     try:
-        subprocess.run(["bash", "remove_firewall.sh"], check=True)
+        subprocess.run(["bash", "./programs/remove_firewall.sh"], check=True)
         print("Скрипт remove_firewall.sh успешно выполнен.")
     except subprocess.CalledProcessError as e:
         print(f"Ошибка при выполнении remove_firewall.sh: {e}")
@@ -43,13 +43,38 @@ def clear_firewall():
             print(f"Ошибка при выполнении команды: {e}")
 #---------------------------------------------------------------------------------------
 
+def save_or_apply_rules_firewall():
+    while True:
+        print("1. Cохранить правила")
+        print("2. Применить правила")
+        print("3. Вернутся назад")
+        num = int(input('Сделайте выбор сценария: '))
+        if num == 1:
+            try:
+                subprocess.run(["bash", "./programs/save_rules.sh"], check=True)
+                print("Скрипт save_or_apply_rules.sh успешно выполнен.")
+            except subprocess.CalledProcessError as e:
+                print(f"Ошибка при выполнении save_rules.sh: {e}")
+        elif num == 2:
+            try:
+                subprocess.run(["bash", "./programs/apply_rules.sh"], check=True)
+                print("Скрипт apply_rules.sh успешно выполнен.")
+            except subprocess.CalledProcessError as e:
+                print(f"Ошибка при выполнении apply_rules.sh: {e}")
+        elif num == 3:
+            break
+        else:
+            print('Некорректный выбор, попробуйте ещё раз.')
+
+#--------------------------------------------------------------------------------------
 
 def main():
     while True:
         print("\nМеню:")
         print("1. Важно для стабильной работы nftables! Удаление сторонних firewall (iptables, firewalld)")
         print("2. Очистить firewall (nftables)")
-        print("3. Выйти")
+        print("3. Сохранить или применить правила в /etc/nftables.conf")
+        print("4. Выйти")
 
         number = int(input('Сделайте выбор сценария: '))
         if number == 1:
@@ -57,6 +82,8 @@ def main():
         elif number == 2:
             clear_firewall()
         elif number == 3:
+             save_or_apply_rules_firewall()
+        elif number == 4:
             print("Выход из программы.")
             break  # Выход
         else:
