@@ -8,3 +8,5 @@ apt install python3-nftables
 ```
 chmod +x remove_firewall.sh
 ```
+
+Добавил дерикторию program в которой хранятся скрипты *.sh
