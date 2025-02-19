@@ -13,22 +13,8 @@ if command -v iptables >/dev/null 2>&1; then
     fi
     if [ -d /etc/iptables ]; then
         cp -r /etc/iptables "$BACKUP_DIR/"
-    fi
 
-    echo "Удаляю iptables..."
-    if command -v apt >/dev/null 2>&1; then
-        apt remove --purge -y iptables iptables-persistent
-    elif command -v dnf >/dev/null 2>&1; then
-        dnf remove -y iptables iptables-services
-    elif command -v yum >/dev/null 2>&1; then
-        yum remove -y iptables iptables-services
-    else
-        echo "Не удалось определить пакетный менеджер!"
-        exit 1
-    fi
-else
-    echo "iptables не установлен."
-fi
+
 
 echo "Проверка firewalld..."
 if systemctl is-active --quiet firewalld || systemctl is-enabled --quiet firewalld || rpm -q firewalld >/dev/null 2>&1; then
@@ -56,5 +42,3 @@ else
 fi
 
 echo "Все завершено. Резервные копии сохранены в $BACKUP_DIR"
-
-systemctl start nftables && systemctl enable nftables
