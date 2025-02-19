@@ -15,9 +15,8 @@
 
 #! /usr/bin/python3
 
-import os
 import subprocess
-from datetime import datetime
+
 
 # Remove iptables and firewalld
 def run_remove_firewall():
@@ -37,7 +36,7 @@ def clear_firewall():
     if confirm.lower() == 'y':
         try:
             # nft flush ruleset
-            subprocess.run(["nft", "flush", "ruleset"], check=True)
+#            subprocess.run(["nft", "flush", "ruleset"], check=True)
             print("Правила успешно очищены.")
         except subprocess.CalledProcessError as e:
             print(f"Ошибка при выполнении команды: {e}")
@@ -73,7 +72,7 @@ def main():
         print("\nМеню:")
         print("1. Важно для стабильной работы nftables! Удаление сторонних firewall (iptables, firewalld)")
         print("2. Очистить firewall (nftables)")
-        print("3. Сохранить или применить правила в /etc/nftables.conf")
+        print("3. Сохранить или применить правила iptables")
         print("4. Выйти")
 
         number = int(input('Сделайте выбор сценария: '))
