@@ -1,4 +1,4 @@
-l
+
 #!/bin/bash
 
 BACKUP_DIR="/root/firewall_backup_$(date +%Y%m%d_%H%M%S)"
