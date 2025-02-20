@@ -1,5 +1,5 @@
-# Принял решение не использовать nftables и перейти на iptables для разработки
-# Испоользовать nftables прийдется но под капотом iptables
+# Принял решение использовать nftables
+
 ## Server distribution
 | Distribution    | Support  |
 |----------------|-----------|
